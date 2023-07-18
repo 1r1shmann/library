@@ -5,8 +5,13 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
+    'name' => 'Library',
+    'language' => 'ru-RU',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'modules' => [
+        
+    ],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -21,6 +26,14 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+        ],
+        'session' => [
+            'class' => 'yii\web\DbSession',
+            'db' => 'db', 
+            'sessionTable' => 'user_session', // название таблицы для хранения данных сессии. По умолчанию 'session'.
+            'cookieParams' => [
+                'lifetime' => 43200
+            ]
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -41,14 +54,12 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
     ],
     'params' => $params,
 ];
