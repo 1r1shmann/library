@@ -1,5 +1,4 @@
 <?php
-
 namespace app\controllers;
 
 use Yii;
@@ -9,9 +8,13 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\SignupForm;
+use app\models\User;
+
 
 class SiteController extends Controller
 {
+
     /**
      * {@inheritdoc}
      */
@@ -82,7 +85,7 @@ class SiteController extends Controller
 
         $model->password = '';
         return $this->render('login', [
-            'model' => $model,
+                'model' => $model,
         ]);
     }
 
@@ -112,7 +115,7 @@ class SiteController extends Controller
             return $this->refresh();
         }
         return $this->render('contact', [
-            'model' => $model,
+                'model' => $model,
         ]);
     }
 
@@ -124,5 +127,23 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionSignup()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+        $model = new SignupForm();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $user = new User();
+            $user->nickname = $model->nickname;
+            $user->username = $model->username;
+            $user->password = Yii::$app->security->generatePasswordHash($model->password);
+            if ($user->save()) {
+                return $this->goHome();
+            }
+        }
+        return $this->render('signup', compact('model'));
     }
 }
