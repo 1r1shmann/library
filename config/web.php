@@ -30,7 +30,7 @@ $config = [
         'session' => [
             'class' => 'yii\web\DbSession',
             'db' => 'db', 
-            'sessionTable' => 'user_session', // название таблицы для хранения данных сессии. По умолчанию 'session'.
+            'sessionTable' => 'user_session',
             'cookieParams' => [
                 'lifetime' => 43200
             ]
@@ -59,6 +59,9 @@ $config = [
             'showScriptName' => false,
             'rules' => [
             ],
+        ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
         ],
     ],
     'params' => $params,
