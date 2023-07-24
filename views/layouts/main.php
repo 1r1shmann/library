@@ -8,8 +8,10 @@ use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\NavBar;
 use app\components\MenuHelper;
+use app\assets\BootstrapIconsAsset;
 
 AppAsset::register($this);
+BootstrapIconsAsset::register($this);
 
 $this->registerCsrfMetaTags();
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
