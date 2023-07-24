@@ -17,6 +17,14 @@ return [
             'url' => ['/site/contact']
         ],
         [
+            'label' => 'Жанры',
+            'url' => ['/site/genres']
+        ],
+        [
+            'label' => 'Случайная книга',
+            'url' => ['/site/random-book']
+        ],
+        [
             'label' => 'Администрирование',
             'restricted' => ['Admin'],
             'items' => [
