@@ -6,8 +6,6 @@ use app\assets\AppAsset;
 use app\widgets\Alert;
 use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
-use yii\bootstrap5\NavBar;
-use app\components\MenuHelper;
 use app\assets\BootstrapIconsAsset;
 
 AppAsset::register($this);
@@ -32,27 +30,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         <?php $this->beginBody() ?>
 
         <header id="header">
-            <?php
-            NavBar::begin([
-                'brandLabel' => Yii::$app->name,
-                'brandUrl' => Yii::$app->homeUrl,
-                'options' => ['class' => 'navbar-expand-lg navbar-dark bg-dark']
-            ]);
-            $items = Yii::$app->params['menu_items'];
-
-            if (Yii::$app->user->isGuest === true) {
-                $items[] = ['label' => 'Регистрация', 'url' => ['/site/signup']];
-                $items[] = ['label' => 'Войти', 'url' => ['/site/login']];
-            } else {
-                $items[] = ['label' => 'Выйти (' . Yii::$app->user->identity->username . ')', 'url' => ['/site/logout']];
-            }
-            echo MenuHelper::widget([
-                'options' => ['class' => 'navbar-nav'],
-                'items' => $items
-            ]);
-            NavBar::end();
-
-            ?>
+            <?= $this->render('menu') ?>
         </header>
 
         <main id="main" class="flex-shrink-0" role="main">
