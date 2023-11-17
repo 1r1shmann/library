@@ -25,12 +25,12 @@ class SiteController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['index', 'logout', 'error', 'contact', 'about', 'genres', 'random-book'],
+                        'actions' => ['index', 'logout', 'error', 'contact', 'about', 'genres', 'random-book', 'rules'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
                     [
-                        'actions' => ['index', 'login', 'signup', 'error', 'contact', 'about', 'genres', 'random-book'],
+                        'actions' => ['index', 'login', 'signup', 'error', 'contact', 'about', 'genres', 'random-book', 'rules'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -153,5 +153,10 @@ class SiteController extends Controller
     public function actionRandomBook()
     {
         return $this->render('random_book');
+    }
+    
+    public function actionRules()
+    {
+        return $this->render('rules');
     }
 }

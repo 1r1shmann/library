@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Июл 21 2023 г., 17:00
+-- Время создания: Ноя 17 2023 г., 15:20
 -- Версия сервера: 8.0.30
 -- Версия PHP: 8.1.9
 
@@ -379,6 +379,8 @@ CREATE TABLE `books` (
   `age_limit_id` int NOT NULL,
   `cover` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `annotation` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `series_id` int NOT NULL,
+  `number_in_series` int NOT NULL,
   `created_user_id` bigint NOT NULL DEFAULT '1',
   `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_modified_user_id` bigint NOT NULL DEFAULT '1',
@@ -397,56 +399,6 @@ CREATE TABLE `books_and_authors_accordance` (
   `author_id` bigint NOT NULL,
   `role_id` int NOT NULL,
   `confirm` tinyint(1) NOT NULL DEFAULT '0',
-  `created_user_id` bigint NOT NULL DEFAULT '1',
-  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_modified_user_id` bigint NOT NULL DEFAULT '1',
-  `last_modified_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `books_and_genres_accordance`
---
-
-CREATE TABLE `books_and_genres_accordance` (
-  `id` bigint NOT NULL,
-  `book_id` bigint NOT NULL,
-  `genre_id` int NOT NULL,
-  `created_user_id` bigint NOT NULL DEFAULT '1',
-  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_modified_user_id` bigint NOT NULL DEFAULT '1',
-  `last_modified_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `books_and_sections_accordance`
---
-
-CREATE TABLE `books_and_sections_accordance` (
-  `id` bigint NOT NULL,
-  `book_id` bigint NOT NULL,
-  `section_id` bigint NOT NULL,
-  `sort` int NOT NULL,
-  `created_user_id` bigint NOT NULL DEFAULT '1',
-  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_modified_user_id` bigint NOT NULL DEFAULT '1',
-  `last_modified_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `books_and_series_accordance`
---
-
-CREATE TABLE `books_and_series_accordance` (
-  `id` bigint NOT NULL,
-  `series_id` bigint NOT NULL,
-  `book_id` bigint NOT NULL,
-  `book_number_in_series` int NOT NULL,
   `created_user_id` bigint NOT NULL DEFAULT '1',
   `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_modified_user_id` bigint NOT NULL DEFAULT '1',
@@ -947,10 +899,12 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 
 CREATE TABLE `sections` (
   `id` bigint NOT NULL,
+  `book_id` int NOT NULL,
   `parent_id` bigint NOT NULL DEFAULT '0',
   `type_id` int NOT NULL,
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `order_by` int NOT NULL,
   `created_user_id` bigint NOT NULL DEFAULT '1',
   `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_modified_user_id` bigint NOT NULL DEFAULT '1',
@@ -1029,8 +983,9 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `nickname`, `username`, `password`, `password_reset_token`, `avatar`, `reg_date`, `last_login_date`, `created_user_id`, `created_date`, `last_modified_user_id`, `last_modified_date`) VALUES
 (1, 'system', 'system', 'null', '', 'system.png', '2022-11-27 16:58:31', '2022-11-27 16:58:31', 1, '2022-11-27 21:58:31', 1, '2022-11-27 16:58:31'),
-(2, 'Администратор', 'admin', '$2y$10$ndDl5J/Vpuu36noaL9dnZewNndwaN2wYnx7QMuKdgbrenIc7SWPFO', NULL, NULL, '2023-07-18 07:05:22', '2023-07-18 07:05:22', 1, '2023-07-18 10:05:22', 1, '2023-07-18 07:05:22'),
-(3, 'Модератор', 'moderator', '$2y$13$t.rsmzgub8vKkULQ9SRoQe9AUs2AM1P.3csbT4dAkrsIznv8oBlwO', NULL, NULL, '2023-07-18 11:47:09', '2023-07-18 11:47:09', 1, '2023-07-18 14:47:10', 1, '2023-07-18 11:47:10');
+(2, 'Администратор', 'admin', '$2y$10$ndDl5J/Vpuu36noaL9dnZewNndwaN2wYnx7QMuKdgbrenIc7SWPFO', NULL, 'system.png', '2023-07-18 07:05:22', '2023-07-18 07:05:22', 1, '2023-07-18 10:05:22', 1, '2023-07-18 07:05:22'),
+(3, 'Модератор', 'moderator', '$2y$13$t.rsmzgub8vKkULQ9SRoQe9AUs2AM1P.3csbT4dAkrsIznv8oBlwO', NULL, 'system.png', '2023-07-18 11:47:09', '2023-07-18 11:47:09', 1, '2023-07-18 14:47:10', 1, '2023-07-18 11:47:10'),
+(4, 'User', 'user', '$2y$13$biSl6DZtdsMW0E2Tb7PNBe1FBCJdns0cxcVK91Oor8CS1fSqekFA2', NULL, 'system.png', '2023-08-02 07:40:00', '2023-08-02 07:40:00', 1, '2023-08-02 12:40:00', 1, '2023-08-02 09:40:00');
 
 -- --------------------------------------------------------
 
@@ -1049,12 +1004,11 @@ CREATE TABLE `user_session` (
 --
 
 INSERT INTO `user_session` (`id`, `expire`, `data`) VALUES
-('1db13hus881b00vvkbm4gk2c3arklg9p', 1689676933, 0x5f5f666c6173687c613a303a7b7d),
-('and7922gh0q5tt71flstpvdhadsj02rv', 1689836068, 0x5f5f666c6173687c613a303a7b7d5f5f69647c693a323b5f5f617574684b65797c4e3b),
-('foi29733agp0i2kottmv9q4r00fg5767', 1689676930, 0x5f5f666c6173687c613a303a7b7d),
-('mgkcjr9nhl9cnf38vk72ai4pu25fj7v3', 1689688903, 0x5f5f666c6173687c613a303a7b7d5f5f69647c693a333b5f5f617574684b65797c4e3b5f5f636170746368612f736974652f636170746368617c733a373a226e6d636f7a657a223b5f5f636170746368612f736974652f63617074636861636f756e747c693a313b),
-('pejqs7f9mm99rn1lv7adn6m8n1edsh0s', 1689748661, 0x5f5f666c6173687c613a303a7b7d5f5f636170746368612f736974652f636170746368617c733a373a2273617561726168223b5f5f636170746368612f736974652f63617074636861636f756e747c693a313b),
-('ujcg5eskdpup9i6b4h41p64qvbtf1f37', 1689941934, 0x5f5f666c6173687c613a303a7b7d);
+('31ohced0jgrgelklb0ckihvdjir1i8ij', 1692799168, 0x5f5f666c6173687c613a303a7b7d5f5f69647c693a343b5f5f617574684b65797c4e3b),
+('5n4alc8jitn4i3qa389jogu8nkc8buaf', 1700219847, 0x5f5f666c6173687c613a303a7b7d5f5f636170746368612f736974652f636170746368617c733a363a226a6f70746275223b5f5f636170746368612f736974652f63617074636861636f756e747c693a313b5f5f69647c693a343b5f5f617574684b65797c4e3b),
+('92aubr2qfpdn2o1fs31lhs0acgr0roki', 1695370390, 0x5f5f666c6173687c613a303a7b7d),
+('g4eefjlvdouqm9bqrr2qgpt9qikis10s', 1696509278, 0x5f5f666c6173687c613a303a7b7d),
+('ieiic8hec4mrdhgc57e9587julp21bu9', 1695298412, 0x5f5f666c6173687c613a303a7b7d5f5f69647c693a343b5f5f617574684b65797c4e3b);
 
 --
 -- Индексы сохранённых таблиц
@@ -1139,36 +1093,6 @@ ALTER TABLE `books_and_authors_accordance`
   ADD KEY `books_and_authors_accordance_fk2` (`book_id`),
   ADD KEY `books_and_authors_accordance_fk3` (`author_id`),
   ADD KEY `books_and_authors_accordance_fk4` (`role_id`);
-
---
--- Индексы таблицы `books_and_genres_accordance`
---
-ALTER TABLE `books_and_genres_accordance`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `books_and_genres_accordance_fk0` (`created_user_id`),
-  ADD KEY `books_and_genres_accordance_fk1` (`last_modified_user_id`),
-  ADD KEY `books_and_genres_accordance_fk2` (`book_id`),
-  ADD KEY `books_and_genres_accordance_fk3` (`genre_id`);
-
---
--- Индексы таблицы `books_and_sections_accordance`
---
-ALTER TABLE `books_and_sections_accordance`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `books_and_sections_accordance_fk0` (`created_user_id`),
-  ADD KEY `books_and_sections_accordance_fk1` (`last_modified_user_id`),
-  ADD KEY `books_and_sections_accordance_fk3` (`book_id`),
-  ADD KEY `books_and_sections_accordance_fk4` (`section_id`);
-
---
--- Индексы таблицы `books_and_series_accordance`
---
-ALTER TABLE `books_and_series_accordance`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `books_and_series_accordance_fk0` (`created_user_id`),
-  ADD KEY `books_and_series_accordance_fk1` (`last_modified_user_id`),
-  ADD KEY `books_and_series_accordance_fk2` (`series_id`),
-  ADD KEY `books_and_series_accordance_fk3` (`book_id`);
 
 --
 -- Индексы таблицы `book_access_level`
@@ -1324,24 +1248,6 @@ ALTER TABLE `books_and_authors_accordance`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `books_and_genres_accordance`
---
-ALTER TABLE `books_and_genres_accordance`
-  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT для таблицы `books_and_sections_accordance`
---
-ALTER TABLE `books_and_sections_accordance`
-  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT для таблицы `books_and_series_accordance`
---
-ALTER TABLE `books_and_series_accordance`
-  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT для таблицы `book_access_level`
 --
 ALTER TABLE `book_access_level`
@@ -1411,7 +1317,7 @@ ALTER TABLE `series`
 -- AUTO_INCREMENT для таблицы `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
@@ -1478,33 +1384,6 @@ ALTER TABLE `books_and_authors_accordance`
   ADD CONSTRAINT `books_and_authors_accordance_fk2` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`),
   ADD CONSTRAINT `books_and_authors_accordance_fk3` FOREIGN KEY (`author_id`) REFERENCES `authors` (`id`),
   ADD CONSTRAINT `books_and_authors_accordance_fk4` FOREIGN KEY (`role_id`) REFERENCES `author_roles` (`id`);
-
---
--- Ограничения внешнего ключа таблицы `books_and_genres_accordance`
---
-ALTER TABLE `books_and_genres_accordance`
-  ADD CONSTRAINT `books_and_genres_accordance_fk0` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `books_and_genres_accordance_fk1` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `books_and_genres_accordance_fk2` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`),
-  ADD CONSTRAINT `books_and_genres_accordance_fk3` FOREIGN KEY (`genre_id`) REFERENCES `genres` (`id`);
-
---
--- Ограничения внешнего ключа таблицы `books_and_sections_accordance`
---
-ALTER TABLE `books_and_sections_accordance`
-  ADD CONSTRAINT `books_and_sections_accordance_fk0` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `books_and_sections_accordance_fk1` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `books_and_sections_accordance_fk3` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`),
-  ADD CONSTRAINT `books_and_sections_accordance_fk4` FOREIGN KEY (`section_id`) REFERENCES `sections` (`id`);
-
---
--- Ограничения внешнего ключа таблицы `books_and_series_accordance`
---
-ALTER TABLE `books_and_series_accordance`
-  ADD CONSTRAINT `books_and_series_accordance_fk0` FOREIGN KEY (`created_user_id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `books_and_series_accordance_fk1` FOREIGN KEY (`last_modified_user_id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `books_and_series_accordance_fk2` FOREIGN KEY (`series_id`) REFERENCES `series` (`id`),
-  ADD CONSTRAINT `books_and_series_accordance_fk3` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`);
 
 --
 -- Ограничения внешнего ключа таблицы `book_access_level`

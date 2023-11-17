@@ -16,11 +16,15 @@ $menu_items = [
         'url' => ['/site/index']
     ],
     [
-        'label' => 'About',
+        'label' => 'О сайте',
         'url' => ['/site/about']
     ],
     [
-        'label' => 'Contact',
+        'label' => 'Правила',
+        'url' => ['/site/rules']
+    ],
+    [
+        'label' => 'Контакты',
         'url' => ['/site/contact']
     ],
     [
@@ -36,12 +40,12 @@ $menu_items = [
         'restricted' => ['Admin'],
         'items' => [
             [
-                'label' => 'About',
+                'label' => 'О сайте',
                 'url' => ['/site/about'],
                 'restricted' => ['Admin'],
             ],
             [
-                'label' => 'Contact',
+                'label' => 'Контакты',
                 'url' => ['/site/contact'],
                 'restricted' => ['Admin'],
             ],
@@ -65,12 +69,8 @@ if (!Yii::$app->user->isGuest) {
         'visible' => !Yii::$app->user->isGuest,
         'items' => [
             [
-                'label' => 'About',
-                'url' => ['/site/about'],
-            ],
-            [
-                'label' => 'Contact',
-                'url' => ['/site/contact'],
+                'label' => 'Работа с книгами',
+                'url' => ['/book'],
             ],
             [
                 'label' => 'Выйти',
