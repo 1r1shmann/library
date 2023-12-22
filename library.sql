@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 17 2023 г., 15:20
+-- Время создания: Дек 22 2023 г., 16:39
 -- Версия сервера: 8.0.30
 -- Версия PHP: 8.1.9
 
@@ -381,6 +381,7 @@ CREATE TABLE `books` (
   `annotation` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `series_id` int NOT NULL,
   `number_in_series` int NOT NULL,
+  `access_level_id` int NOT NULL,
   `created_user_id` bigint NOT NULL DEFAULT '1',
   `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_modified_user_id` bigint NOT NULL DEFAULT '1',
@@ -962,6 +963,7 @@ CREATE TABLE `series` (
 -- Структура таблицы `user`
 --
 
+
 CREATE TABLE `user` (
   `id` bigint NOT NULL,
   `nickname` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -981,6 +983,7 @@ CREATE TABLE `user` (
 -- Дамп данных таблицы `user`
 --
 
+
 INSERT INTO `user` (`id`, `nickname`, `username`, `password`, `password_reset_token`, `avatar`, `reg_date`, `last_login_date`, `created_user_id`, `created_date`, `last_modified_user_id`, `last_modified_date`) VALUES
 (1, 'system', 'system', 'null', '', 'system.png', '2022-11-27 16:58:31', '2022-11-27 16:58:31', 1, '2022-11-27 21:58:31', 1, '2022-11-27 16:58:31'),
 (2, 'Администратор', 'admin', '$2y$10$ndDl5J/Vpuu36noaL9dnZewNndwaN2wYnx7QMuKdgbrenIc7SWPFO', NULL, 'system.png', '2023-07-18 07:05:22', '2023-07-18 07:05:22', 1, '2023-07-18 10:05:22', 1, '2023-07-18 07:05:22'),
@@ -993,6 +996,7 @@ INSERT INTO `user` (`id`, `nickname`, `username`, `password`, `password_reset_to
 -- Структура таблицы `user_session`
 --
 
+
 CREATE TABLE `user_session` (
   `id` varchar(32) COLLATE utf8mb4_general_ci NOT NULL,
   `expire` int DEFAULT NULL,
@@ -1003,12 +1007,14 @@ CREATE TABLE `user_session` (
 -- Дамп данных таблицы `user_session`
 --
 
+
 INSERT INTO `user_session` (`id`, `expire`, `data`) VALUES
 ('31ohced0jgrgelklb0ckihvdjir1i8ij', 1692799168, 0x5f5f666c6173687c613a303a7b7d5f5f69647c693a343b5f5f617574684b65797c4e3b),
 ('5n4alc8jitn4i3qa389jogu8nkc8buaf', 1700219847, 0x5f5f666c6173687c613a303a7b7d5f5f636170746368612f736974652f636170746368617c733a363a226a6f70746275223b5f5f636170746368612f736974652f63617074636861636f756e747c693a313b5f5f69647c693a343b5f5f617574684b65797c4e3b),
 ('92aubr2qfpdn2o1fs31lhs0acgr0roki', 1695370390, 0x5f5f666c6173687c613a303a7b7d),
 ('g4eefjlvdouqm9bqrr2qgpt9qikis10s', 1696509278, 0x5f5f666c6173687c613a303a7b7d),
-('ieiic8hec4mrdhgc57e9587julp21bu9', 1695298412, 0x5f5f666c6173687c613a303a7b7d5f5f69647c693a343b5f5f617574684b65797c4e3b);
+('ieiic8hec4mrdhgc57e9587julp21bu9', 1695298412, 0x5f5f666c6173687c613a303a7b7d5f5f69647c693a343b5f5f617574684b65797c4e3b),
+('qfqvcsjo6eppa5s7e0f0bspc0d2ck0br', 1703241564, 0x5f5f666c6173687c613a303a7b7d5f5f69647c693a343b5f5f617574684b65797c4e3b);
 
 --
 -- Индексы сохранённых таблиц
